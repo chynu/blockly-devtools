@@ -276,50 +276,357 @@ class AppController {
   }
 
   populateForDemo() {
-    let demoBlocks = Object.create(null);
-    demoBlocks['turn'] = `{
-  "type": "turn",
-  "message0": "turn %1",
-  "args0": [
-    {
-      "type": "field_dropdown",
-      "name": "turn_direction",
-      "options": [
-        [
-          "left",
-          "turn_left"
-        ],
-        [
-          "right",
-          "turn_right"
-        ]
-      ]
-    }
-  ],
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 285,
-  "tooltip": "",
-  "helpUrl": ""
-}`;
-    demoBlocks['forward'] = `{
-  "type": "forward",
-  "message0": "move forward",
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 285,
-  "tooltip": "",
-  "helpUrl": ""
-}`;
-    for (let blockName in demoBlocks) {
+    this.projectController.createToolbox('Level 1 Toolbox');
+    this.projectController.createWorkspaceContents('Level 1 Workspace');
+    this.projectController.createBlockLibrary('MazeBlocks');
+    let demoXmls = Object.create(null);
+    demoXmls['forward'] = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="factory_base" id="U9b}_mOOT.(W!^88fs]:" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">forward</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="laWw,*zs/gz0/S%}L)4Z">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="$t15,~*g|Q?[9UR$Fb$?">
+            <field name="TEXT">move forward</field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="ox2~;\`PjT{vPt(iRGk,9" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="dV~M6ri|QDemFY[m7@MQ" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="S::gn94.+UE)yGD9e]\`%"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Wtw;\`4HdRoMFWR6sTnD\`"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="p4rZcLbO|6#t*wEuMl{f">
+        <mutation colour="#935ba5"></mutation>
+        <field name="HUE">285</field>
+      </block>
+    </value>
+  </block>
+  <block type="input_statement" id="A=R52OR:Hvm;ntDNV}k." disabled="true" x="231" y="407">
+    <field name="INPUTNAME">NAME</field>
+    <field name="ALIGN">LEFT</field>
+  </block>
+</xml>
+`;
+    demoXmls['turn'] = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="factory_base" id="UDe)r(G(1EZ)c)dj,:E:" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">turn</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="/+11wBQu3/![iiOMJ6JQ">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="vImtT+Km%Ys(N:9ue:w.">
+            <field name="TEXT">turn</field>
+            <next>
+              <block type="field_dropdown" id="2)[Ym9_wyTrZi67*=/VU">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">turn_direction</field>
+                <field name="USER0">left ↺</field>
+                <field name="CPU0">turn_left</field>
+                <field name="USER1">right ↻</field>
+                <field name="CPU1">turn_right</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="V:g7i[}e}@dY-.N%PG2z" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="q4E5;*h]$=[Y3d@X1*|I" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="6Z**#M:72p{@2pW0aw-t"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id=".8k{{tZ9cP!.\`VLs|u4q"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="FgzTGy+S#u^@oPQZ=[Mg">
+        <mutation colour="#935ba5"></mutation>
+        <field name="HUE">285</field>
+      </block>
+    </value>
+  </block>
+</xml>
+`;
+    demoXmls['repeat_until'] = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="factory_base" id="h%nmRkcr2q2=FzdecE1K" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">repeat_until</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="[4,VBNgHRUd:SX|-QiI6">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="pY%!ay$U;e2}McYG0%NS">
+            <field name="TEXT">repeat until</field>
+            <next>
+              <block type="field_image" id="^VY3S=wuO1\`H5mi=%d|\`">
+                <field name="SRC">http://www.clker.com/cliparts/j/4/f/Y/g/Q/orange-pin-hi.png</field>
+                <field name="WIDTH">15</field>
+                <field name="HEIGHT">15</field>
+                <field name="ALT">*</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_statement" id="YCH(GJmRwPMj[?Acy2Zp">
+            <field name="INPUTNAME">NAME</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="h]WYLYz+mH%xt9w_jJ6.">
+                <field name="TEXT">do</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="8u=XF[wycctB4DjhtXAr"></shadow>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="IR*G8,)@+{pyI]jPY-wF" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="q%SEnUPM21B!A^RC77#1" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="..y]b(n}B%|hR\`CiK^DH"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="n:NqR8;HWG;Us~EW5e44"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="E:d=xsRhrL*uI~G0cQw2">
+        <mutation colour="#5ba55b"></mutation>
+        <field name="HUE">120</field>
+      </block>
+    </value>
+  </block>
+</xml>
+`;
+
+    demoXmls['path_do'] = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="factory_base" id="G1CY-ZgrjRwDANg*|Z|7" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">path_do</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="^dl^;^c/!WG1_r3=Np8M">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="}$\`_*X-$KfG[QF7J%mc$">
+            <field name="TEXT">if path</field>
+            <next>
+              <block type="field_dropdown" id="}m=a7CEKF(H|xPgB(i2F">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">path_direction</field>
+                <field name="USER0">ahead</field>
+                <field name="CPU0">ahead</field>
+                <field name="USER1">to the left ↺</field>
+                <field name="CPU1">left</field>
+                <field name="USER2">to the right ↻</field>
+                <field name="CPU2">right</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_statement" id="a*g4],+wLe{4}bvlVfEo">
+            <field name="INPUTNAME">path_do_statement</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="X+dbKw{]JZ,\`!O\`=Fomg">
+                <field name="TEXT">do</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id="_f+SO5J5_GjDh;=Y,BYH"></shadow>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="bc]DUaZQeP:cT!-.1Irv" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="rUqNo.I%v21YsKBy_wHS" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="ir$Wqg=!N~Q$qaUnpI2i"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="f+UIO9Lffv0awG0u]bp4"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="YFQ|W3ud3F:]C:iY5h=z">
+        <mutation colour="#5b80a5"></mutation>
+        <field name="HUE">210</field>
+      </block>
+    </value>
+  </block>
+</xml>
+`;
+
+    demoXmls['path_do_else'] = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="factory_base" id="zMjgo6zja=lotUs^9i:6" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">path_do_else</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="?!7g!9qiVDle:k-2[ko*">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="#P*He~M1CflNebeiy7M4">
+            <field name="TEXT">if path</field>
+            <next>
+              <block type="field_dropdown" id="^q$:Tpk/O[#Ngw5YaNR9">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">path_direction</field>
+                <field name="USER0">ahead</field>
+                <field name="CPU0">ahead</field>
+                <field name="USER1">to the left ↺</field>
+                <field name="CPU1">left</field>
+                <field name="USER2">to the right ↻</field>
+                <field name="CPU2">right</field>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <next>
+          <block type="input_statement" id="~:b7k;?Y1Rq_,RI]?0Ta">
+            <field name="INPUTNAME">direction</field>
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_static" id="X)+h=S!!dR~PNm~@Duuo">
+                <field name="TEXT">do</field>
+              </block>
+            </statement>
+            <value name="TYPE">
+              <shadow type="type_null" id=".J^y:]1cC3.8Yc_IQrzI"></shadow>
+            </value>
+            <next>
+              <block type="input_statement" id="XIF-UyaV2X\`i@ItgZXp}">
+                <field name="INPUTNAME">direction</field>
+                <field name="ALIGN">LEFT</field>
+                <statement name="FIELDS">
+                  <block type="field_static" id="^#b1+uk!6_1@SFlD@,6y">
+                    <field name="TEXT">else</field>
+                  </block>
+                </statement>
+                <value name="TYPE">
+                  <shadow type="type_null" id=")ld{M3M8ol]m\`{LWko3-"></shadow>
+                </value>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="W_PvbmDEH)eN$D*0K|:8" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="rNuns+aiaTZn+(UiuTvT" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="+a3%05WYeY3S=P=D/0=="></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id=":[$/R@e1=\`L#6wYR^#^u"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id=")Iya405ul5M4c,$mSFuW">
+        <mutation colour="#5b80a5"></mutation>
+        <field name="HUE">210</field>
+      </block>
+    </value>
+  </block>
+</xml>
+`;
+    for (let blockName in demoXmls) {
       this.editorController.blockEditorController.createNewBlock(
-          '', blockName, 'MyFirstBlockLibrary', blockName);
-      const block = this.project.librarySet.resources['MyFirstBlockLibrary'].blocks[blockName];
-      block.json = demoBlocks[blockName];
-      block.define();
+          '', blockName, 'MazeBlocks', blockName);
+      const block = this.project.librarySet.resources['MazeBlocks'].blocks[blockName];
+      this.editorController.blockEditorController.view.editorWorkspace.clear();
+      Blockly.Xml.domToWorkspace(
+          Blockly.Xml.textToDom(demoXmls[blockName]),
+          this.editorController.blockEditorController.view.editorWorkspace);
       this.editorController.blockEditorController.updateBlockDefinition();
       this.editorController.blockEditorController.refreshPreviews();
     }
+
+    // Setting toolbox XML
+    const toolbox = this.projectController.project.getToolbox('Level 1 Toolbox');
+    const toolboxXml = `
+<xml xmlns="http://www.w3.org/1999/xhtml">
+  <variables></variables>
+  <block type="forward" id="_%6{~8nKgIn*!I5^[C,t" x="13" y="13"></block>
+  <block type="turn" id=")K$sg+EGnOsCI{)CL:u)" x="13" y="63">
+    <field name="turn_direction">turn_left</field>
+  </block>
+  <block type="turn" id="s.Ssckt~qo}2;fcoUo2." x="13" y="113">
+    <field name="turn_direction">turn_right</field>
+  </block>
+  <block type="repeat_until" id="=;YKJx~\`nRCY+[sQHnM_" x="13" y="163"></block>
+</xml>
+`;
+    toolbox.setXml(toolboxXml);
   }
 
   /**
@@ -329,14 +636,15 @@ class AppController {
     // TODO(#200): Add resources to project before loading navtree, then refresh
     // navtree after first loaded.
     const projController = this.projectController;
-    if (projController.getProject().librarySet.resources['MyFirstBlockLibrary']) {
+    if (projController.getProject().librarySet.resources['MazeBlocks']) {
       return;
     }
-    projController.createToolbox('MyFirstToolbox');
-    projController.createWorkspaceContents('MyFirstWorkspace');
-    projController.createBlockLibrary('MyFirstBlockLibrary');
-    this.editorController.blockEditorController.createNewBlock(
-        '', 'myFirstBlock', 'MyFirstBlockLibrary', 'My Block');
+    // Removed for demo.
+    // projController.createToolbox('MyFirstToolbox');
+    // projController.createWorkspaceContents('MyFirstWorkspace');
+    // projController.createBlockLibrary('MyFirstBlockLibrary');
+    // this.editorController.blockEditorController.createNewBlock(
+    //     '', 'myFirstBlock', 'MyFirstBlockLibrary', 'My Block');
     this.populateForDemo();
   }
 

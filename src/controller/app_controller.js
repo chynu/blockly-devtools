@@ -171,7 +171,8 @@ class AppController {
     this.readWriteController = new ReadWriteController(this);
 
     // Creates project.
-    this.initProject('MyProject');
+    // this.initProject('MyProject');
+    this.initProjectForDemo();
   }
 
   // ======================== CONSTANTS ===========================
@@ -276,7 +277,23 @@ class AppController {
     });
   }
 
-  populateForDemo() {
+  initProjectForDemo() {
+    this.project = new Project('Blockly Maze Game');
+    this.tree = new NavigationTree(this);
+    this.projectController = new ProjectController(this.project, this.tree);
+    this.editorController = new EditorController(this.projectController,
+        this.hiddenWorkspace);
+    this.view = new AppView(this);
+
+    this.tree.ready(() => {
+      if (Object.keys(this.project.librarySet.resources).length > 0) {
+        return;
+      }
+      this.populateDemo();
+    });
+  }
+
+  populateDemo() {
     this.projectController.createToolbox('Level 1 Toolbox');
     this.projectController.createWorkspaceContents('Level 1 Workspace');
     this.projectController.createBlockLibrary('MazeBlocks');
@@ -617,14 +634,14 @@ class AppController {
     const toolboxXml = `
 <xml xmlns="http://www.w3.org/1999/xhtml">
   <variables></variables>
-  <block type="forward" id="_%6{~8nKgIn*!I5^[C,t" x="13" y="13"></block>
-  <block type="turn" id=")K$sg+EGnOsCI{)CL:u)" x="13" y="63">
+  <block type="forward" id="m*W@*E1+krCG-Mlt{D|3" x="38" y="38"></block>
+  <block type="turn" id="eBo)*u!lyn_7;#hG7Z}c" x="38" y="113">
     <field name="turn_direction">turn_left</field>
   </block>
-  <block type="turn" id="s.Ssckt~qo}2;fcoUo2." x="13" y="113">
+  <block type="turn" id="jD0z-!JQ3c#T$ahPGZ)%" x="38" y="188">
     <field name="turn_direction">turn_right</field>
   </block>
-  <block type="repeat_until" id="=;YKJx~\`nRCY+[sQHnM_" x="13" y="163"></block>
+  <block type="repeat_until" id="vtV@JxPxeEXZoh\`]Ku9x" x="38" y="263"></block>
 </xml>
 `;
     toolbox.setXml(toolboxXml);
@@ -642,16 +659,14 @@ class AppController {
     // TODO(#200): Add resources to project before loading navtree, then refresh
     // navtree after first loaded.
     const projController = this.projectController;
-    if (projController.getProject().librarySet.resources['MazeBlocks']) {
+    if (projController.getProject().librarySet.resources['MyFirstBlockLibrary']) {
       return;
     }
-    // Removed for demo.
-    // projController.createToolbox('MyFirstToolbox');
-    // projController.createWorkspaceContents('MyFirstWorkspace');
-    // projController.createBlockLibrary('MyFirstBlockLibrary');
-    // this.editorController.blockEditorController.createNewBlock(
-    //     '', 'myFirstBlock', 'MyFirstBlockLibrary', 'My Block');
-    this.populateForDemo();
+    projController.createToolbox('MyFirstToolbox');
+    projController.createWorkspaceContents('MyFirstWorkspace');
+    projController.createBlockLibrary('MyFirstBlockLibrary');
+    this.editorController.blockEditorController.createNewBlock(
+        '', 'myFirstBlock', 'MyFirstBlockLibrary', 'My Block');
   }
 
   /**

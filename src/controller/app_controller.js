@@ -477,7 +477,7 @@ class AppController {
         </statement>
         <next>
           <block type="input_statement" id="a*g4],+wLe{4}bvlVfEo">
-            <field name="INPUTNAME">path_do_statement</field>
+            <field name="INPUTNAME">path_do_do</field>
             <field name="ALIGN">LEFT</field>
             <statement name="FIELDS">
               <block type="field_static" id="X+dbKw{]JZ,\`!O\`=Fomg">
@@ -628,6 +628,11 @@ class AppController {
 </xml>
 `;
     toolbox.setXml(toolboxXml);
+    const toolboxController = this.editorController.toolboxController;
+    toolboxController.view.toolbox = toolbox;
+    toolboxController.loadToolbox(toolboxController.view.toolbox);
+    toolboxController.setResource(toolboxController.view.toolbox);
+    toolboxController.updateEditorToolbox();
   }
 
   /**

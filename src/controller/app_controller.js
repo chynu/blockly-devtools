@@ -275,6 +275,53 @@ class AppController {
     });
   }
 
+  populateForDemo() {
+    let demoBlocks = Object.create(null);
+    demoBlocks['turn'] = `{
+  "type": "turn",
+  "message0": "turn %1",
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "turn_direction",
+      "options": [
+        [
+          "left",
+          "turn_left"
+        ],
+        [
+          "right",
+          "turn_right"
+        ]
+      ]
+    }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 285,
+  "tooltip": "",
+  "helpUrl": ""
+}`;
+    demoBlocks['forward'] = `{
+  "type": "forward",
+  "message0": "move forward",
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 285,
+  "tooltip": "",
+  "helpUrl": ""
+}`;
+    for (let blockName in demoBlocks) {
+      this.editorController.blockEditorController.createNewBlock(
+          '', blockName, 'MyFirstBlockLibrary', blockName);
+      const block = this.project.librarySet.resources['MyFirstBlockLibrary'].blocks[blockName];
+      block.json = demoBlocks[blockName];
+      block.define();
+      this.editorController.blockEditorController.updateBlockDefinition();
+      this.editorController.blockEditorController.refreshPreviews();
+    }
+  }
+
   /**
    * Populates navtree with sample resources.
    */
@@ -290,6 +337,7 @@ class AppController {
     projController.createBlockLibrary('MyFirstBlockLibrary');
     this.editorController.blockEditorController.createNewBlock(
         '', 'myFirstBlock', 'MyFirstBlockLibrary', 'My Block');
+    this.populateForDemo();
   }
 
   /**
